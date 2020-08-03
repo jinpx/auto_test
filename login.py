@@ -35,17 +35,10 @@ logindata = {"AgentID": 14926056,
              "zCPUID": "612826255"
              }
 
-def Login_Pack(a, b, c, d，e):
-    a = KK_packet()
-    a.addUint(14926056)
-    a.addString("EQ4gG6vEUL06ajaGn4EAuXDa662vaeeqL6UdoOQatxuujAlnqovO6VndvXT4Tv0l4a28XGoDxqde4El6XUAXLXe66lg2o6gQN4tlOgeAoV6gulE2jTNneUulE ")
-    a.addUint(100)
-    a.addUint(101)
-    a.addUint(100)
-    a.to_bytes()
-    return data;
 
 
 
-a_data = Login_Pack(1,2,3,4,5);
-socket.send(a_data, size)
+from tools.Config import *
+
+log = Logger()
+log.logger.info('asdfs')
