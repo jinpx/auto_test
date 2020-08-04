@@ -1,7 +1,7 @@
 import struct
 from tools.Config import Logger
 
-jc = {
+GATE_MSG = {
     'm_is_haveZhuanZhang': 12,
     'm_strGameSerialNO': 'asdf',
     'm_strMainserverIPAddr': 'adf',
@@ -23,7 +23,7 @@ jc = {
 }
 
 
-class GateServer(Message): 
+class Gate(Message): 
     def __init__(self, data: dict):
         loger = Logger().logger
         loger.info(f'传入数据{str(data)}')
