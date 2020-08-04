@@ -1,26 +1,7 @@
-import struct
-
-
-class KK_packet:
-    def __init__(self):
-        self.m_data = []
-
-    def addChar(self, _data):
-        struct.pack('c', _data)
-
-    def addString(self, _data, _size):
-        struct.pack('c', _data)
-
-    def addUint(self, _data):  # 4bit
-        self.m_data.append(_data)
-
-    def to_bytes(self):
-        data = str(self.m_data).encode()
-        print(data)
-
-
-if __name__ == '__main__':
-    logindata = {"AgentID": 14926056,
+from tcp.mysocket import MySocket
+from tools.Config import *
+from aserver import AServer
+logindata = {"AgentID": 14926056,
                  "TML_SN": "EQ4gG6vEUL06ajaGn4EAuXDa662vaeeqL6UdoOQatxuujAlnqovO6VndvXT4Tv0l4a28XGoDxqde4El6XUAXLXe66lg2o6gQN4tlOgeAoV6gulE2jTNneUulE "
         , "device_info": "",
                  "device_type": 2,
@@ -35,6 +16,14 @@ if __name__ == '__main__':
                  "uRoomVer": 220,
                  "zCPUID": "612826255"
                  }
+my_socket = MySocket()
+ip,port = getValue('Aserver','ip'),int(getValue('Aserver','port'))
+my_socket.connect(ip,port)
+aserver= AServer(my_socket)
+aserver.send_Connect()
+print(aserver.recv_Connect())
+my_socket.close()
 
-    a = struct.pack('3s', 'hoe')
-    print(a)
+
+
+
