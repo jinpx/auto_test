@@ -1,5 +1,4 @@
 import struct
-from tools.Config import Logger
 
 GATE_MSG = {
     'm_is_haveZhuanZhang': 12,
