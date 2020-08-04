@@ -51,7 +51,7 @@ class Gate():
     #                        self.p, self.q, self.r)
 
     # 解包
-    def head_unstruck(self, data):
+    def body_unstruck(self, data):
         res = {}
         a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r = struct.unpack(
             "i20s40sI128s128s128s128s128s128s200siiIqqiI", data)

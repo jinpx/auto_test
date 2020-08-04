@@ -32,6 +32,7 @@ class AServer(object):
     def send_Connect(self):
         sender = Message(ASERVER_CONNECT)
         data = sender.pack()
+        print(data)
         self.m_socket.send(data, len(data))
 
         # 认证成功
@@ -56,3 +57,11 @@ class AServer(object):
             _Gate = Gate()
             res = _Gate.body_unstruck(_data[20:])
             print(res)
+
+
+if __name__ == '__main__':
+    import socket
+    my_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    my_s.bind(('47.89.41.240', 37025))
+    a = AServer(my_s)
+    a.send_Connect()
