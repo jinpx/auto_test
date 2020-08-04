@@ -23,35 +23,32 @@ GATE_MSG = {
 }
 
 
-class Gate(Message): 
-    def __init__(self, data: dict):
-        loger = Logger().logger
-        loger.info(f'传入数据{str(data)}')
-        self.data = data
-        self.a = data['m_is_haveZhuanZhang']
-        self.b = data['m_strGameSerialNO'].encode()
-        self.c = data['m_strMainserverIPAddr'].encode()
-        self.d = data['m_iMainserverPort']
-        self.e = data['m_strWebRootADDR'].encode()
-        self.f = data['m_strHomeADDR'].encode()
-        self.g = data['m_strHelpADDR'].encode()
-        self.h = data['m_strDownLoadSetupADDR'].encode()
-        self.i = data['m_strDownLoadUpdatepADDR'].encode()
-        self.j = data['m_strRallAddvtisFlashADDR'].encode()
-        self.k = data['m_strRoomRollADDR'].encode()
-        self.l = data['m_nHallInfoShowClass']
-        self.m = data['m_nEncryptType']
-        self.n = data['m_nFunction']
-        self.o = data['m_lNomalIDFrom']
-        self.p = data['m_lNomalIDEnd']
-        self.q = data['m_nIsUsingIMList']
-        self.r = data['m_iGameserverPort']
-
-    # 打包
-    def head_struck(self):
-        return struct.pack("i20s40sI128s128s128s128s128s128s200siiIqqiI", self.a, self.b, self.c, self.d,
-                           self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, self.o,
-                           self.p, self.q, self.r)
+class Gate():
+    # def __init__(self):
+    #     self.a = data['m_is_haveZhuanZhang']
+    #     self.b = data['m_strGameSerialNO'].encode()
+    #     self.c = data['m_strMainserverIPAddr'].encode()
+    #     self.d = data['m_iMainserverPort']
+    #     self.e = data['m_strWebRootADDR'].encode()
+    #     self.f = data['m_strHomeADDR'].encode()
+    #     self.g = data['m_strHelpADDR'].encode()
+    #     self.h = data['m_strDownLoadSetupADDR'].encode()
+    #     self.i = data['m_strDownLoadUpdatepADDR'].encode()
+    #     self.j = data['m_strRallAddvtisFlashADDR'].encode()
+    #     self.k = data['m_strRoomRollADDR'].encode()
+    #     self.l = data['m_nHallInfoShowClass']
+    #     self.m = data['m_nEncryptType']
+    #     self.n = data['m_nFunction']
+    #     self.o = data['m_lNomalIDFrom']
+    #     self.p = data['m_lNomalIDEnd']
+    #     self.q = data['m_nIsUsingIMList']
+    #     self.r = data['m_iGameserverPort']
+    #
+    # # 打包
+    # def head_struck(self):
+    #     return struct.pack("i20s40sI128s128s128s128s128s128s200siiIqqiI", self.a, self.b, self.c, self.d,
+    #                        self.e, self.f, self.g, self.h, self.i, self.j, self.k, self.l, self.m, self.n, self.o,
+    #                        self.p, self.q, self.r)
 
     # 解包
     def head_unstruck(self, data):
@@ -77,10 +74,3 @@ class Gate(Message):
         res['m_nIsUsingIMList'] = q
         res['m_iGameserverPort'] = r
         return res
-
-
-a = Message(jc)
-b = a.head_struck()
-print(b)
-print(len(b))
-print(a.head_unstruck(b))
