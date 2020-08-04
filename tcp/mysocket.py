@@ -20,23 +20,25 @@ class MySocket:
 
     def send(self, msg):
         total_sent = 0
-        while total_sent < MSGLEN:
+        while total_sent < len(msg):
             sent = self.s.send(msg[total_sent:])
             if sent == 0:
                 raise RuntimeError("socket connection broken")
             total_sent = total_sent + sent
 
     def recv(self):
-        self.s.settimeout(5)
-        chunks = []
-        bytes_recd = 0
-        while bytes_recd < MSGLEN:
-            chunk = self.s.recv(min(MSGLEN - bytes_recd, 2048))
-            if chunk == b'':
-                raise RuntimeError("socket connection broken")
-            chunks.append(chunk)
-            bytes_recd = bytes_recd + len(chunk)
-        return b''.join(chunks)
+        self.s.settimeout(10)
+        try:
+            chunks = []
+            while True:
+                chunk = self.s.recv(1024)
+                if chunk:
+                    chunks.append(chunk)
+                else:
+                    break
+            return b''.join(chunks)
+        except socket.timeout:
+            raise Exception('接收数据超时')
 
 
 if __name__ == '__main__':
