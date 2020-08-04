@@ -18,6 +18,7 @@ logindata = {"AgentID": 14926056,
                  }
 my_socket = MySocket()
 ip,port = getValue('Aserver','ip'),int(getValue('Aserver','port'))
+print(ip,port)
 my_socket.connect(ip,port)
 aserver= AServer(my_socket)
 aserver.send_Connect()

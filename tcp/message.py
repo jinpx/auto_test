@@ -21,6 +21,8 @@ class Message(object):
         self.uMessageSize, self.bMainID, self.bAssistantID, self.bHandleCode, self.bReserve = self.s.unpack(_data)
 
 
+
+
 if __name__ == '__main__':
     MSG_HEAD = {
         'uMessageSize': 0,
@@ -30,7 +32,3 @@ if __name__ == '__main__':
         'bReserve': 0,
     }
     _sender = Message(MSG_HEAD)
-    _data = _sender.pack()
-    print(_data)
-    _sender.unpack(_data)
-    print(_sender.bMainID)

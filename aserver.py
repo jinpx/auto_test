@@ -32,14 +32,16 @@ class AServer(object):
     def send_Connect(self):
         sender = Message(ASERVER_CONNECT)
         data = sender.pack()
-        print(data)
-        self.m_socket.send(data, len(data))
+        self.m_socket.send(data)
+        print(f'发生认证连接：str{ASERVER_CONNECT} bytes{data}')
 
-        # 认证成功
-
-    def recv_Connect(self, _data):
+    # 认证成功
+    def recv_Connect(self):
         sender = Message(ASERVER_CONNECT)
+        _data = self.m_socket.recv()
+        print(f'验证返回数据：{_data}')
         sender.unpack(_data)
+        print(f'认证结果数据:bytes{_data} str{sender.bAssistantID}')
         if sender.bMainID == MDM_CONNECT and sender.bAssistantID == ASS_CONNECT_SUCCESS:
             return ASS_CONNECT_SUCCESS
 
@@ -62,6 +64,5 @@ class AServer(object):
 if __name__ == '__main__':
     import socket
     my_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    my_s.bind(('47.89.41.240', 37025))
     a = AServer(my_s)
     a.send_Connect()
