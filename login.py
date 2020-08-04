@@ -36,9 +36,5 @@ logindata = {"AgentID": 14926056,
              }
 
 
-
-
-from tools.Config import *
-
-log = Logger()
-log.logger.info('asdfs')
+a = struct.pack('3s','hoe')
+print(a)
