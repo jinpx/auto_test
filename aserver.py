@@ -1,6 +1,5 @@
-from tcp.message import Message
+from tcp.message import Message,Gate
 from tcp.mysocket import MySocket
-from gate import Gate
 
 # 连接认证
 MDM_CONNECT = 1  # 认证主消息
@@ -55,10 +54,10 @@ class AServer(object):
     # 接收网关请求
     def recv_GateServer(self, _data):
         _sender = Message(GATE_SERVERS)
-        _sender.unpack(_data[:20])
-        if _sender.bMainID == MDM_GP_REQURE_GAME_PARA:
+        a,b,c,d,key = _sender.unpack(_data[:20])
+        if b == MDM_GP_REQURE_GAME_PARA:
             _Gate = Gate()
-            res = _Gate.body_unstruck(_data[20:])
+            res = _Gate.body_unstruck(_data[20:],key)
             print(res)
 
 
@@ -68,9 +67,7 @@ if __name__ == '__main__':
     _a = AServer(_mysocket)
     _a.send_Connect()
     _data = _mysocket.recv()
-    print(_data)
     _a.send_GateServer()
     _data = _mysocket.recv()
-    print(_data)
     _a.recv_GateServer(_data)
     _mysocket.close()
