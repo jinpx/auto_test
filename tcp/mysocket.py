@@ -1,5 +1,4 @@
 import socket
-import time
 
 
 class MySocket:
@@ -29,10 +28,5 @@ class MySocket:
         return chunk
 
 
-
 if __name__ == '__main__':
-    _my = MySocket()
-    _my.connect("47.89.41.240", 37025)
-    time.sleep(12)
-    _my.close()
-    print("Close")
+    pass

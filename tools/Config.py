@@ -11,9 +11,17 @@ def getValue(key, value):
     return result
 
 
+# 读取配置文件Int 类型
+def getInt(option, key):
+    con = configparser.ConfigParser()
+    config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+    con.read(config_path)
+    return con.getint(option, key)
+
+
 # 写回ini配置文件
 def setValue(option, key, value):
-    con = configparser.ConfigParser()
+    con = configparser.ConfigParser(allow_no_value=True)
     config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
     con.read(config_path)
     try:
@@ -37,7 +45,7 @@ class Logger(object):
         self.logger.setLevel(logging.DEBUG)
 
         # 创建一个handler，用于写入日志文件
-        rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
+        rq = time.strftime('%Y%m%d', time.localtime(time.time()))
         log_path = os.path.join(os.path.dirname(__file__), '../logs/')
         log_name = log_path + rq + '.log'
         fh = logging.FileHandler(log_name, encoding="utf-8")
@@ -48,7 +56,8 @@ class Logger(object):
         ch.setLevel(logging.INFO)
 
         # 定义handler的输出格式
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter(
+            '%(levelname)s - %(asctime)s - process: %(process)d - %(filename)s - %(lineno)d - %(message)s')
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
 
@@ -58,3 +67,7 @@ class Logger(object):
 
     def getlog(self):
         return self.logger
+
+
+if __name__ == '__main__':
+    pass
