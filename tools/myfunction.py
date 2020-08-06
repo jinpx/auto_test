@@ -48,13 +48,21 @@ class RC4(object):
             _Pointer[i] = Temp[_Length - i - 1]
 
 
-def pack_head(data,s='iiiii'):
+def pack_head(data, s='iiiii'):
     s = struct.Struct(s)
-    return s.pack(data['uMessageSize'], data['bMainID'], data['bAssistantID'], data['bHandleCode'],
-                  data['bReserve'])
+    return s.pack(*data.values())
 
 
 def unpack(data, s='iiiii'):
     return struct.unpack(s, data)
 
 
+if __name__ == '__main__':
+    ASERVER_CONNECT = {
+        'uMessageSize': 20,
+        'bMainID': 1,
+        'bAssistantID': 2,
+        'bHandleCode': 0,
+        'bReserve': 0,
+    }
+    print(pack_head(ASERVER_CONNECT))
