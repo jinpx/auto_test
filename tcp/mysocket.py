@@ -24,7 +24,7 @@ class MySocket:
         return total_sent
 
     def recv(self):
-        chunk = self.s.recv(2048)
+        chunk = self.s.recv(10240)
         return chunk
 
 

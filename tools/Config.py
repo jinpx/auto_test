@@ -8,9 +8,8 @@ def my_Log():
     logger.add(BASE_DIR + '{time:%Y%m%d}.log',
                format='{time:YYYY-MM-DD HH:mm:ss}-process:{process}-{level}-{module}-{name}-{line}-{message}',
                encoding='utf-8', level='INFO')
-    logger.add(BASE_DIR + '{time:%Y%m%d}_err.log',
-               format='{time:YYYY-MM-DD HH:mm:ss}-process:{process}-{module}-{name}-{line}-{message}',
-               encoding='utf-8', level='ERROR')
+    logger.add(BASE_DIR + '{time:%Y%m%d%H%M%S}_diff.log',format='{message}',
+               encoding='utf-8', level='DEBUG')
     return logger
 
 
@@ -33,14 +32,14 @@ def getInt(option, key):
 
 # 写回ini配置文件
 def setValue(option, key, value):
-    con = configparser.ConfigParser(allow_no_value=True)
+    con = configparser.ConfigParser()
     config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
-    con.read(config_path)
+    con.read(config_path, encoding='utf-8')
     try:
-        if key != "" and value != "":
+        if key != "":
             header = con[option]
             header[key] = value
-            with open(config_path, 'w')as file:
+            with open(config_path, 'w', encoding='utf-8')as file:
                 con.write(file)
     except Exception as e:
         traceback.print_exc()
@@ -84,3 +83,4 @@ def setValue(option, key, value):
 #     from loguru import logger
 #     logger.info('你是一条狗')
 #     logger.debug('你还是一条狗')
+

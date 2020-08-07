@@ -1,3 +1,5 @@
+
+
 # 连接认证
 MDM_CONNECT = 1  # 认证主消息
 ASS_CONNECT_SUCCESS = 3  # 认证成功
@@ -47,4 +49,13 @@ LOGIN_BODY = {
     "szIP": "192.168.0.59".encode(),
 }
 # 登录返回状态码
-LOGIN_RES_CODE = {'5': '已登录', '10': '登录成功', '4': '登录失败'}
+LOGIN_RES_CODE = {'5': '登录成功', '4': '登录失败'}
+
+# 获取游戏列表
+ASERVER_GAME_LIST = {
+    'uMessageSize': 20,
+    'bMainID': 101,
+    'bAssistantID': 1,
+    'bHandleCode': 0,
+    'bReserve': 1,
+}
