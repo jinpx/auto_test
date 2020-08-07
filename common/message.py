@@ -2,6 +2,7 @@
 MDM_CONNECT = 1  # 认证主消息
 ASS_CONNECT_SUCCESS = 3  # 认证成功
 ASS_NET_GET = 5  # 取得认证
+# Aserver 认证包
 ASERVER_CONNECT = {
     'uMessageSize': 20,
     'bMainID': MDM_CONNECT,
@@ -30,10 +31,10 @@ LOGIN_HEAD = {
 # 登录体
 LOGIN_BODY = {
     "uRoomVer": 220,
-    "szName": "BYPhone328497094".encode(),
+    "szName": "13713185800".encode(),
     "TML_SN": "EQ4gG6vEUL06ajaGn4EAuXDa662vaeeqL6UdoOQatxuujAlnqovO6VndvXT4Tv0l4a28XGoDxqde4El6XUAXLXe66lg2o6gQN4tlOgeAoV6gulE2jTNneUulE".encode(),
-    "szMD5Pass": "14926056_026444-703017-106FA5-C05854-26B9-337F62".encode(),
-    "szMathineCode": "026444-703017-106FA5-C05854-26B9-337F62".encode(),
+    "szMD5Pass": "3d24b838770ee90773804e8599e549ff".encode(),
+    "szMathineCode": "026444-703017-106FA5-C05854-26B9-337F63".encode(),
     "zCPUID": "612826255".encode(),
     "szHardID": "2222222".encode(),
     "szIDcardNo": "*".encode(),
@@ -45,3 +46,5 @@ LOGIN_BODY = {
     "AgentID": 14926056,
     "szIP": "192.168.0.59".encode(),
 }
+# 登录返回状态码
+LOGIN_RES_CODE = {'5': '已登录', '10': '登录成功', '4': '登录失败'}
