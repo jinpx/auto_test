@@ -1,8 +1,8 @@
+import json
 from collections import namedtuple
 import time
 from tools.myfunction import *
 from tcp.mysocket import MySocket
-from tools.Config import *
 from common.message import *
 
 logger = my_Log()
@@ -16,8 +16,7 @@ def log_msg(t: int, a, b, c, d):
 
 
 class AServer(object):
-    def __init__(self):
-        ip, port = getValue('Aserver', 'ip'), getInt('Aserver', 'port')
+    def __init__(self, ip, port):
         self.m_socket = MySocket()
         self.m_socket.connect(ip, port)
         self.rc = RC4()
@@ -86,8 +85,8 @@ class AServer(object):
         self.recv_Connect()
         self.send_GateServer()
         res = self.recv_GateServer()
-        for i in res.keys():
-            setValue('Aserver', i, str(res[i]))
+        # for i in res.keys():
+        #     setValue('Aserver', i, str(res[i]))
 
 
 class GServer(object):
@@ -95,8 +94,6 @@ class GServer(object):
         self.m_socket = my_sock
         self.rc_Come = RC4()
         self.rc_Goto = RC4()
-        ip, port = getValue('Aserver', 'm_strmainserveripaddr'), getInt('Aserver', 'm_imainserverport')
-        self.m_socket.connect(ip, port)
         self.t = int(time.time() * 1000)
 
     # 发送认证
@@ -120,8 +117,12 @@ class GServer(object):
             res = 'Gserver认证信息失败'
 
     # 发送登录包
-    def send_Login(self):
-        data_body = pack(LOGIN_BODY, s='=I64s128s52s64s24s24s64s8sii50sii20s')
+    def send_Login(self, data):
+        data = data if data else LOGIN_BODY
+        for i in data:
+            if isinstance(data[i], str):
+                data[i] = data[i].encode()
+        data_body = pack(data, s='=I64s128s52s64s24s24s64s8sii50sii20s')
         LOGIN_HEAD['uMessageSize'] += len(data_body)
         data_head = pack(LOGIN_HEAD)
         data_body = bytes(self.rc_Goto.Process(data_body))
@@ -146,10 +147,31 @@ class GServer(object):
             'szIP', 'nPort', 'szPwd', 'VIPLevel', 'IsYueKa', 'YueKatime', 'IsGetYkScore',
             'IsHaveBankPass', 'AgencyLevel', 'BankNo', 'Alipay', 'Exper', 'MachineCode', 'EBAT',
             'AgentID', 'IsCommonUser', 'UserChouShui']
-        model = namedtuple('UserInfo', _list)
         # 登录成功解析返回数据
         s = '=iiiiiLLI?61s128s50s100sqqdiii50s36s50s20s50s50s50s10siiii?iii20siii50si60siiiiii20s50si64s100siii'
-        User_Info = model._make(unpack(bytes(self.rc_Come.Process(data[20:])), s))
+        result = unpack(bytes(self.rc_Come.Process(data[20:])), s)
+        res = dict(zip(_list, result))
+        res['szName'] = res['szName'].decode('utf-8').strip(b'\x00'.decode())
+        res['Wechat'] = res['Wechat'].decode('utf-8').strip(b'\x00'.decode())
+        res['szMD5Pass'] = res['szMD5Pass'].decode('utf-8').strip(b'\x00'.decode())
+        res['nickName'] = res['nickName'].decode('utf-8').strip(b'\x00'.decode())
+        res['szRealName'] = res['szRealName'].decode('utf-8').strip(b'\x00'.decode())
+        res['szIDCardNo'] = res['szIDCardNo'].decode('utf-8').strip(b'\x00'.decode())
+        res['szMobileNo'] = res['szMobileNo'].decode('utf-8').strip(b'\x00'.decode())
+        res['szQQNum'] = res['szQQNum'].decode('utf-8').strip(b'\x00'.decode())
+        res['szAdrNation'] = res['szAdrNation'].decode('utf-8').strip(b'\x00'.decode())
+        res['szAdrProvince'] = res['szAdrProvince'].decode('utf-8').strip(b'\x00'.decode())
+        res['szAdrCity'] = res['szAdrCity'].decode('utf-8').strip(b'\x00'.decode())
+        res['szZipCode'] = res['szZipCode'].decode('utf-8').strip(b'\x00'.decode())
+        res['szAgentCode'] = res['szAgentCode'].decode('utf-8').strip(b'\x00'.decode())
+        res['szIP'] = res['szIP'].decode('utf-8').strip(b'\x00'.decode())
+        res['szPwd'] = res['szPwd'].decode('utf-8').strip(b'\x00'.decode())
+        res['BankNo'] = res['BankNo'].decode('utf-8').strip(b'\x00'.decode())
+        res['Alipay'] = res['Alipay'].decode('utf-8').strip(b'\x00'.decode())
+        res['MachineCode'] = res['MachineCode'].decode('utf-8').strip(b'\x00'.decode())
+        res['EBAT'] = res['EBAT'].decode('utf-8').strip(b'\x00'.decode())
+        print(res)
+        return res
 
     # 获取游戏列表
     def send_Games(self):
@@ -185,7 +207,10 @@ class GServer(object):
         t = int(time.time() * 1000) - self.t
         logger.debug(log_msg(2, t, game_head[1], game_head[2], len(data)))
         res_body = data[20:]
-        for i in range(int((game_head[0] - 20) / 146)):
+        if len(data[20:]) % 146 != 0:
+            return
+        conut = int((game_head[0] - 20) / 146)
+        for i in range(conut):
             res = dict()
             games = unpack(bytes(self.rc_Come.Process(res_body[i * 146:(i + 1) * 146])), s='=IIII61s61sII')
             game = games[4].decode('gbk').strip('\x00')
@@ -194,20 +219,32 @@ class GServer(object):
             res['game_exe'], res['port'] = game_exe, games[7]
             setValue('GameList', game, str(res))
 
-    def main(self):
+    def main(self, data=None):
         self.send_Connect()
         self.recv_Connect()
-        self.send_Login()
-        self.recv_Login()
+        self.send_Login(data)
+        User = self.recv_Login()
         self.send_Games()
         self.recv_Server_List()
         self.recv_Game_List()
+        return User
+
+
+def main():
+    ip, port, port2 = '47.89.41.240', 37025
+    a = AServer(ip, port)
+    a.main()
+    # _mysocket = MySocket()
+    # _mysocket.connect(ip, port2)
+    # _a = GServer(_mysocket)
+    # _a.main()
+    # _mysocket.close()
 
 
 if __name__ == '__main__':
-    a = AServer()
-    a.main()
-    _mysocket = MySocket()
-    _a = GServer(_mysocket)
-    _a.main()
-    _mysocket.close()
+    import threading
+
+    for i in range(10000):
+        t = threading.Thread(target=main)
+        t.start()
+    time.sleep(2)

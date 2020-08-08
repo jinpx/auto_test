@@ -33,21 +33,22 @@ LOGIN_HEAD = {
 # 登录体
 LOGIN_BODY = {
     "uRoomVer": 220,
-    "szName": "13713185800".encode(),
-    "TML_SN": "EQ4gG6vEUL06ajaGn4EAuXDa662vaeeqL6UdoOQatxuujAlnqovO6VndvXT4Tv0l4a28XGoDxqde4El6XUAXLXe66lg2o6gQN4tlOgeAoV6gulE2jTNneUulE".encode(),
-    "szMD5Pass": "3d24b838770ee90773804e8599e549ff".encode(),
-    "szMathineCode": "026444-703017-106FA5-C05854-26B9-337F63".encode(),
-    "zCPUID": "612826255".encode(),
-    "szHardID": "2222222".encode(),
-    "szIDcardNo": "*".encode(),
-    "szMobileVCode": "*".encode(),
+    "szName": "13713185800",
+    "TML_SN": "EQ4gG6vEUL06ajaGn4EAuXDa662vaeeqL6UdoOQatxuujAlnqovO6VndvXT4Tv0l4a28XGoDxqde4El6XUAXLXe66lg2o6gQN4tlOgeAoV6gulE2jTNneUulE",
+    "szMD5Pass": "3d24b838770ee90773804e8599e549ff",
+    "szMathineCode": "026444-703017-106FA5-C05854-26B9-337F63",
+    "zCPUID": "612826255",
+    "szHardID": "2222222",
+    "szIDcardNo": "*",
+    "szMobileVCode": "*",
     "gsqPs": 5471,
     "iUserID": 0,
-    "szdevice_info": "".encode(),
+    "szdevice_info": "",
     "szdevice_type": 2,
     "AgentID": 14926056,
-    "szIP": "192.168.0.59".encode(),
+    "szIP": "192.168.0.59",
 }
+
 # 登录返回状态码
 LOGIN_RES_CODE = {'5': '登录成功', '4': '登录失败'}
 
